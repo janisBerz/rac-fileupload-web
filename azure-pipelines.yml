@@ -31,7 +31,7 @@ stages:
       coverletCoverageExclusions: $(coverletCoverageExclusions)
 
 # Deployment steps
-  - template: jobs/deployment.yml@azureDevOpsTemplates
-    parameters:
-      webAppName: '$(webAppName)'
+- template: jobs/deployment.yml@azureDevOpsTemplates
+  parameters:
+    webAppName: '$(webAppName)'
 
