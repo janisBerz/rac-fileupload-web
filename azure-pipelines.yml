@@ -1,0 +1,85 @@
+variables:
+  buildConfiguration: 'Release'
+  poolName: 'rac-pool'
+  System.Debug: 'false'
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  coreInfrastructureName: 'rac-core-infra-demo'
+  webAppName: 'rac-fileupload-web-$(Environment.Name)'
+  azFunctionName: 'rac-fileinflate-$(Environment.Name)'
+  azureSubscriptionName: 'DevTest'
+  resourceGroupName: 'rac-demo-app'
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool: '$(poolName)'
+    # workspace:
+    #   clean: all
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet Core Restore'
+      inputs:
+        command: restore
+        projects: '**/*.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet Core Build'
+      inputs:
+        command: build
+        projects: '**/*.sln'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'DotNet Core Package WebApp'
+      inputs:
+        command: publish
+        arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) --no-build'
+        projects: '**/*.sln'
+        zipAfterPublish: true
+
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'DotNet Core Package Function'
+    #   inputs:
+    #     command: publish
+    #     arguments: '--configuration $(buildConfiguration) --output $(build.artifactstagingdirectory) --no-build'
+    #     projects: '**/*.sln'
+    #     publishWebProjects: false
+    #     zipAfterPublish: true
+    #     #modifyOutputPath: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifacts'
+      inputs:
+        path: $(build.artifactstagingdirectory)
+        artifact: App
+
+- stage: Deployment_Dev
+  jobs:
+  - deployment: deployment_dev
+    displayName: 'Dev'
+    pool: '$(poolName)'
+    environment: 'dev'
+    # condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature'))
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - template: deployment.yml
+
+# - stage: Deployment_Test
+#   jobs:
+#   - deployment: deployment_test
+#     displayName: 'Test'
+#     pool:
+#       vmImage: 'windows-2019'
+#     environment: 'test'
+#     condition: |
+#       and(succeeded(),
+#       eq(variables['Build.Reason'], 'PullRequest'))
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - template: deployment.yml
