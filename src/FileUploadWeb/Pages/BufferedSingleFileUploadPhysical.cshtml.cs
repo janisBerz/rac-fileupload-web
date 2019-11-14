@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -25,7 +26,9 @@ namespace SampleApp.Pages
             // To save physical files to a path provided by configuration:
             _targetFilePath = config.GetValue<string>("StoredFilesPath");
 
-            _destinationStorageAccount = config.GetValue<string>("DestinationStorageAccount");
+            //_destinationStorageAccount = config.GetValue<string>("DestinationStorageAccount");
+            _destinationStorageAccount = Environment.GetEnvironmentVariable("DestinationStorageAccount");
+
 
             // To save physical files to the temporary files folder, use:
             //_targetFilePath = Path.GetTempPath();

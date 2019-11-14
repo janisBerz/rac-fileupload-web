@@ -11,6 +11,7 @@ resources:
     type: github
     name: janisBerz/rac-azure-devops-templates
     endpoint: 'janisBerz'
+    ref: master # optional ref to pin to
 
 trigger:
   branches:
