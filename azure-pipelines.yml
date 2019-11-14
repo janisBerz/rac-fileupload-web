@@ -3,6 +3,7 @@ variables:
   resourceGroupName: 'rac-demo-app'
   sonarCloudExtraProperties: ''
   coverletCoverageExclusions: ''
+  pool: 'rac-pool-2'
 
 # GitHub Repo that conatins build templates. Reference https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts#using-other-repositories
 resources:
@@ -30,6 +31,7 @@ stages:
       webAppName: '$(webAppName)'
       sonarCloudExtraProperties: $(sonarCloudExtraProperties)
       coverletCoverageExclusions: $(coverletCoverageExclusions)
+      pool: $(pool)
 
 # Deployment steps
 - template: jobs/deployment.yml@azureDevOpsTemplates
