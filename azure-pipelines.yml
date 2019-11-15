@@ -3,7 +3,6 @@ variables:
   resourceGroupName: 'rac-demo-app'
   sonarCloudExtraProperties: ''
   coverletCoverageExclusions: ''
-  pool: 'rac-pool-2'
 
 # GitHub Repo that conatins build templates. Reference https://docs.microsoft.com/en-us/azure/devops/pipelines/process/templates?view=vsts#using-other-repositories
 resources:
@@ -12,7 +11,6 @@ resources:
     type: github
     name: janisBerz/rac-azure-devops-templates
     endpoint: 'janisBerz'
-    ref: master # optional ref to pin to
 
 trigger:
   branches:
