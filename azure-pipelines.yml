@@ -29,7 +29,6 @@ stages:
       webAppName: '$(webAppName)'
       sonarCloudExtraProperties: $(sonarCloudExtraProperties)
       coverletCoverageExclusions: $(coverletCoverageExclusions)
-      pool: $(pool)
 
 # Deployment steps
 - template: jobs/deployment.yml@azureDevOpsTemplates
