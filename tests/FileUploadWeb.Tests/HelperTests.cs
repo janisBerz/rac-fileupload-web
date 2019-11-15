@@ -12,11 +12,11 @@ namespace FileUploadWeb.Tests
             var result = FileHelpers.SetLocalPath("SomeFileName.zip");
             Assert.NotNull(result);
         }
-        [Fact]
-        public void SetLocalPathToTempFolder2()
-        {
-            var result = FileHelpers.SetLocalPath2("SomeFileName.zip");
-            Assert.NotNull(result);
-        }
+        // [Fact]
+        // public void SetLocalPathToTempFolder2()
+        // {
+        //     var result = FileHelpers.SetLocalPath2("SomeFileName.zip");
+        //     Assert.NotNull(result);
+        // }
     }
 }
